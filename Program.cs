@@ -24,7 +24,12 @@ namespace ChatClient
                 
                 Console.WriteLine($"Socket connected to {sender.RemoteEndPoint}");
 
-                byte[] msg = Encoding.ASCII.GetBytes("This is a test message. <EOF>");
+                Console.WriteLine("Your message: ");
+                string? userMessage = Console.ReadLine();
+                StringBuilder stringBuilder = new StringBuilder(userMessage);
+                stringBuilder.Append("<EOF>");
+
+                byte[] msg = Encoding.ASCII.GetBytes(stringBuilder.ToString());
                 int bytesSent = sender.Send(msg);
 
                 int bufferSize = 1024;
@@ -32,7 +37,7 @@ namespace ChatClient
 
                 int bytesReceived = sender.Receive(bytes);
 
-                Console.WriteLine($"Response received = {Encoding.ASCII.GetString(bytes, 0, bytesReceived)}");
+                Console.WriteLine($"Response received: {Encoding.ASCII.GetString(bytes, 0, bytesReceived)}");
 
             }
             catch (Exception e)
